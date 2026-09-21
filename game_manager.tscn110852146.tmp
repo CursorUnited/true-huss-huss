@@ -1,0 +1,79 @@
+[gd_scene load_steps=12 format=3 uid="uid://dfw5spg841ben"]
+
+[ext_resource type="Script" uid="uid://qq7jo0msx4wr" path="res://player.gd" id="1_70yv6"]
+[ext_resource type="Script" uid="uid://biyjbe4rxkxnj" path="res://game_manager.gd" id="1_o2178"]
+[ext_resource type="PackedScene" uid="uid://dip10nflyk155" path="res://standard_obstacle.tscn" id="2_o2178"]
+[ext_resource type="PackedScene" uid="uid://owfbblpydxe4" path="res://jump_obstacle.tscn" id="3_vk86k"]
+[ext_resource type="PackedScene" uid="uid://vvj0m50u7atr" path="res://duck_obstacle.tscn" id="4_shwjl"]
+[ext_resource type="PackedScene" uid="uid://byg0oa1eyk166" path="res://someting_anim/wheel_low-poly.glb" id="6_shwjl"]
+[ext_resource type="PackedScene" uid="uid://c8hr2ln0v0lfw" path="res://death_screen.tscn" id="7_eakoi"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_imk4i"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_70yv6"]
+sky_material = SubResource("ProceduralSkyMaterial_imk4i")
+
+[sub_resource type="Environment" id="Environment_smx3j"]
+background_mode = 2
+sky = SubResource("Sky_70yv6")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eakoi"]
+size = Vector3(1, 0.84851074, 0.91308594)
+
+[node name="GameManager" type="Node3D"]
+script = ExtResource("1_o2178")
+ObstacleScene = Array[PackedScene]([ExtResource("2_o2178"), ExtResource("3_vk86k"), ExtResource("4_shwjl")])
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_smx3j")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8535508, 0.20106076, -0.48065123, 0, 0.9225381, 0.38590604, 0.5210096, 0.3293904, -0.78743315, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6413648, 0)
+script = ExtResource("1_70yv6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(0.5601789, 0, 0, 0, 1.470511, 0, 0, 0, 1.4331266, 0, 0.9094881, -0.019189246)
+shape = SubResource("BoxShape3D_eakoi")
+
+[node name="Model" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.365385, 0)
+
+[node name="Sketchfab_Scene" parent="Player/Model" instance=ExtResource("6_shwjl")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, -0.4766035, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.90746975, 0.42011744, 0, -0.42011744, 0.90746975, 0, 3.1388855, 3.2295756)
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -89.68778)
+use_collision = true
+size = Vector3(10, 0.5, 200)
+
+[node name="ObstacleContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.111179)
+
+[node name="StandardObstacle" parent="ObstacleContainer" instance=ExtResource("2_o2178")]
+
+[node name="SpawnTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="ScoreTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="DeathScreen" parent="." instance=ExtResource("7_eakoi")]
+visible = false
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]

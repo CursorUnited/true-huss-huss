@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8hr2ln0v0lfw"]
+
+[ext_resource type="Script" uid="uid://dvtn0f26sa6ne" path="res://death_screen.gd" id="1_if853"]
+
+[sub_resource type="Theme" id="Theme_7hb72"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_if853")
+
+[node name="Background" type="Panel" parent="."]
+offset_right = 1147.0
+offset_bottom = 647.0
+theme = SubResource("Theme_7hb72")
+
+[node name="Label" type="Label" parent="Background"]
+layout_mode = 0
+offset_left = 509.0
+offset_top = 246.0
+offset_right = 601.0
+offset_bottom = 269.0
+text = "GAME OVER"
+
+[node name="Restart_button" type="Button" parent="Background"]
+layout_mode = 0
+offset_left = 516.0
+offset_top = 296.0
+offset_right = 591.0
+offset_bottom = 327.0
+text = "RESTART"

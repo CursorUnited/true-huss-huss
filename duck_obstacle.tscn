@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://vvj0m50u7atr"]
+
+[ext_resource type="Script" uid="uid://ceqohgfvs6faq" path="res://obstacle.gd" id="1_0e3t8"]
+[ext_resource type="PackedScene" uid="uid://b2gf7nabp3u6k" path="res://someting_anim/delorean_low_poly.glb" id="2_0e3t8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5c5ls"]
+size = Vector3(0.0897522, 0.13619995, 0.0052337646)
+
+[node name="StaticBody3D" type="StaticBody3D" groups=["obstacle"]]
+script = ExtResource("1_0e3t8")
+CurrentObstacleType = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(131.42294, 0, 0, 0, 14.195449, 0, 0, 0, 327.2262, -0.00010511279, 1.6828616, 1.1618667)
+shape = SubResource("BoxShape3D_5c5ls")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_0e3t8")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, -27.163893, 0)
